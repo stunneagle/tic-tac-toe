@@ -1,0 +1,95 @@
+
+
+.game {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    background-color: var(--game-text-color); /* Set the background color for the gap */
+
+  }
+  
+  .game-column {
+    width: 100%;
+    height: 140px;
+    background-color: var(--background-color);
+    /* border: 5px solid #bbeeff; */
+    color: var(--game-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Add a border to the top and right of each column */
+.game-column:not(:last-child) {
+    border-right: none;
+  }
+  
+  /* Add a border to the bottom and left of each column */
+  .game-column:not(:first-child) {
+    border-left: none;
+  }
+
+  /* Add borders to the bottom of each row */
+.game-column:nth-child(1),
+.game-column:nth-child(2),
+.game-column:nth-child(3) {
+  border-bottom: none;
+}
+  
+  .game-column span {
+    font-size: 6rem;
+    font-family: 'Pacifico', cursive;
+    font-weight: bold;
+  }
+  
+/* Add an animation for the handwritten appearance effect */
+
+
+.appear-animation {
+    opacity: 0;
+    animation: appear 0.5s forwards;
+    font-family: 'Pacifico', cursive; /* Use your desired handwriting font here */
+  }
+  
+  @keyframes appear {
+    to {
+      opacity: 1;
+    }
+  }
+  
+
+
+
+ 
+  .result {
+    margin-top: 10px;
+    color: black; 
+    background-color: var(--game-text-color);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 30rem;
+    height: 31rem;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .play-again{
+    display:flex;
+    justify-content: space-evenly;
+  }
+  .play-again button{
+    padding: 8px;
+    cursor: pointer;
+    font-size: 2rem;
+  }
+  
+  @media screen and (max-width:900px){
+    .result{
+      width: 23.5rem;
+    }
+  
+  }
