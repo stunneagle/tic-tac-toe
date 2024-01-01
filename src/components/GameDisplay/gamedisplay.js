@@ -234,6 +234,20 @@ getBestMove = (currentBoard, currentPlayer) => {
         ){
         return 3;
     }
+    if (
+        currentBoard[3] ===myOpponent
+        &&currentBoard[7] === myOpponent 
+        &&currentBoard[6] === EMPTY
+        ){
+        return 6;
+    }
+    if (
+        currentBoard[5] ===myOpponent
+        &&currentBoard[7] === myOpponent 
+        &&currentBoard[8] === EMPTY
+        ){
+        return 8;
+    }
 
    // Prioritize corners (0, 2, 6, 8) if the center cell is not available
    const cornerIndices = [0, 2, 6, 8].filter((index) => currentBoard[index] === EMPTY);
