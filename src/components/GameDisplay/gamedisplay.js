@@ -88,7 +88,6 @@ export default class GameDisplay extends React.Component {
     checkWinner = () => {
         const { board } = this.state;
 
-        //Check for a winner (more draw conditions coming)
         //implementing logic based on rules
         const winPatterns = [
             [0,1,2],
@@ -213,13 +212,28 @@ getBestMove = (currentBoard, currentPlayer) => {
        return cornerIndices[Math.floor(Math.random() * cornerIndices.length)];
    }
 
+    // Special case: if opponent plays index 1, prioritize playing between 1 and 6 (index 3 or 5)
+  if (currentBoard[1] === myOpponent) {
+    if (currentBoard[6] === myOpponent && currentBoard[3] === EMPTY) {
+      return 3;
+    } else if ( currentBoard[8] === myOpponent &&currentBoard[5] === EMPTY ){
+        return 5;
+    }
+    else if (currentBoard[5] === myOpponent &&currentBoard[2] === EMPTY){
+        return 2;
+    }
+    else if (currentBoard[3] === myOpponent &&currentBoard[0] === EMPTY){
+        return 0;
+    }
+  }
+
     // Prioritize edges (1, 3, 5, 7) if the center cell is not available and a corner has been played
-    const edgeIndices = [1, 3, 5, 7].filter((index) => currentBoard[index] === EMPTY);
+    const edgeIndices = [ 1, 3, 5, 7].filter((index) => currentBoard[index] === EMPTY);
     if (edgeIndices.length > 0) {
         return edgeIndices[Math.floor(Math.random() * edgeIndices.length)];
     }
 
-    // Otherwise, make a random move (this should not happen based on your description)
+    // Otherwise, make a random move 
     const emptyIndices = currentBoard.reduce(
         (acc, cell, index) => (cell === EMPTY ? [...acc, index] : acc),
         []
