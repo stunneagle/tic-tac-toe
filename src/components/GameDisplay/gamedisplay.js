@@ -213,6 +213,27 @@ getBestMove = (currentBoard, currentPlayer) => {
         ){
         return 2;
     }
+    if (
+        currentBoard[1] ===myOpponent
+        &&currentBoard[3] === myOpponent 
+        &&currentBoard[0] === EMPTY
+        ){
+        return 0;
+    }
+    if (
+        currentBoard[1] ===myOpponent
+        &&currentBoard[8] === myOpponent 
+        &&currentBoard[5] === EMPTY
+        ){
+        return 5;
+    }
+    if (
+        currentBoard[1] ===myOpponent
+        &&currentBoard[6] === myOpponent 
+        &&currentBoard[3] === EMPTY
+        ){
+        return 3;
+    }
 
    // Prioritize corners (0, 2, 6, 8) if the center cell is not available
    const cornerIndices = [0, 2, 6, 8].filter((index) => currentBoard[index] === EMPTY);
@@ -220,24 +241,11 @@ getBestMove = (currentBoard, currentPlayer) => {
        return cornerIndices[Math.floor(Math.random() * cornerIndices.length)];
    }
 
-    // Special case: if opponent plays index 1, prioritize playing between 1 and 6 (index 3 or 5)
-  if (currentBoard[1] === myOpponent) {
-    if (currentBoard[6] === myOpponent && currentBoard[3] === EMPTY) {
-      return 3;
-    } else if ( currentBoard[8] === myOpponent &&currentBoard[5] === EMPTY ){
-        return 5;
-    }
-    else if (currentBoard[5] === myOpponent &&currentBoard[2] === EMPTY){
-        return 2;
-    }
-    else if (currentBoard[3] === myOpponent &&currentBoard[0] === EMPTY){
-        return 0;
-    }
-  }
+  
 
     // Prioritize edges (1, 3, 5, 7) if the center cell is not available and a corner has been played
     const edgeIndices = [ 1, 3, 5, 7].filter((index) => currentBoard[index] === EMPTY);
-    if (edgeIndices.length > 0) {
+    if (edgeIndices.length > 1) {
         return edgeIndices[Math.floor(Math.random() * edgeIndices.length)];
     }
 
