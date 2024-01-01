@@ -18,6 +18,9 @@ export default class GameDisplay extends React.Component {
             lastMoveByUser: false,
             gameEnded: false,
             delayBeforeDisplay: false,
+            userWin:0,
+            computerWin:0,
+            resultHandled: false,
             
             
         };
@@ -270,6 +273,13 @@ getBestMove = (currentBoard, currentPlayer) => {
         return 5;
     }
     if (
+        currentBoard[2] ===myOpponent
+        &&currentBoard[6] === myOpponent 
+        &&currentBoard[1] === EMPTY
+        ){
+        return 1;
+    }
+    if (
         currentBoard[0] ===myOpponent
         &&currentBoard[5] === myOpponent 
         &&currentBoard[1] === EMPTY
@@ -284,12 +294,20 @@ getBestMove = (currentBoard, currentPlayer) => {
         return 3;
     }
     if (
+        currentBoard[0] ===myOpponent
+        &&currentBoard[8] === myOpponent 
+        &&currentBoard[7] === EMPTY
+        ){
+        return 7;
+    }
+    if (
         currentBoard[3] ===myOpponent
         &&currentBoard[8] === myOpponent 
         &&currentBoard[7] === EMPTY
         ){
         return 7;
     }
+
 
    // Prioritize corners (0, 2, 6, 8) if the center cell is not available
    const cornerIndices = [0, 2, 6, 8].filter((index) => currentBoard[index] === EMPTY);
@@ -320,23 +338,32 @@ getBestMove = (currentBoard, currentPlayer) => {
 };
 
 renderResult = () => {
-    const { winner, lastMoveByUser, delayBeforeDisplay } = this.state;
+    const { winner, lastMoveByUser, delayBeforeDisplay,  } = this.state;
+    let computerWins = (this.state.computerWin)/2;
+    let userWins = (this.state.userWin)/2;
 
     if (winner !== null || this.state.board.every((cell) => cell !== EMPTY)) {
         const userWon = (winner === 'X' && lastMoveByUser) || (winner === 'O' && lastMoveByUser);
 
+        
+
         if (delayBeforeDisplay) {
             setTimeout(() => {
-                this.setState({ delayBeforeDisplay: false });
+                this.setState({ delayBeforeDisplay: false, });
+                
+                
             }, 800);
 
             return null; // Wait for the delay before displaying the result
         }
 
         if (userWon) {
+            this.handleResult(userWon);
+            
             return (
                 <div className={styles['result']}>
                     <p>You won!</p>
+                    <p> (you){userWins} - {computerWins}(computer) </p>
                     <p>Do you want to play again?</p>
                     <p>Choose your symbol:</p>
                     <div className={styles['play-again']}>
@@ -346,9 +373,12 @@ renderResult = () => {
                 </div>
             );
         } else if (winner !== null) {
+            
+            this.handleResult(userWon);
             return (
                 <div className={styles['result']}>
                     <p>You lost!</p>
+                    <p>(you){userWins} - {computerWins}(computer)</p>
                     <p>Do you want to play again?</p>
                     <p>Choose your symbol:</p>
                     <div className={styles['play-again']}>
@@ -358,9 +388,12 @@ renderResult = () => {
                 </div>
             );
         } else {
+            
+            
             return (
                 <div className={styles['result']}>
                     <p>It's a draw!</p>
+                    <p> (you){userWins} - {computerWins}(computer) </p>
                     <p>Do you want to play again?</p>
                     <p>Choose your symbol:</p>
                     <div className={styles['play-again']}>
@@ -371,8 +404,19 @@ renderResult = () => {
             );
         }
     }
+   
 
     return null;
+};
+handleResult = (userWon) => {
+    // Ensure handleResult is called only once per game result
+    if (this.state.resultHandled === false) {
+        this.setState((prevState) => ({
+            userWin: userWon ? prevState.userWin + 1 : prevState.userWin,
+            computerWin: !userWon ? prevState.computerWin + 1 : prevState.computerWin,
+            resultHandled: true, // Set a flag to indicate result is handled
+        }));
+    }
 };
 
 
@@ -387,6 +431,8 @@ handleSymbolSelection = (symbol) => {
             currentPlayer: PLAYER_X,
             winner: null,
             gameEnded: false,
+            resultHandled: false,
+            
         },
         () => {
             if (computerNextSymbol === 'X') {
