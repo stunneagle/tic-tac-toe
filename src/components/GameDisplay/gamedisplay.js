@@ -207,9 +207,16 @@ getBestMove = (currentBoard, currentPlayer) => {
         return 4;
     }
 
-    // Play index 0 if center cell is not available
-    if (currentBoard[0] === EMPTY) {
-        return 0;
+   // Prioritize corners (0, 2, 6, 8) if the center cell is not available
+   const cornerIndices = [0, 2, 6, 8].filter((index) => currentBoard[index] === EMPTY);
+   if (cornerIndices.length > 3) {
+       return cornerIndices[Math.floor(Math.random() * cornerIndices.length)];
+   }
+
+    // Prioritize edges (1, 3, 5, 7) if the center cell is not available and a corner has been played
+    const edgeIndices = [1, 3, 5, 7].filter((index) => currentBoard[index] === EMPTY);
+    if (edgeIndices.length > 0) {
+        return edgeIndices[Math.floor(Math.random() * edgeIndices.length)];
     }
 
     // Otherwise, make a random move (this should not happen based on your description)
@@ -225,6 +232,7 @@ getBestMove = (currentBoard, currentPlayer) => {
 
     return null; // The board is full
 };
+
 renderResult = () => {
     const { winner, lastMoveByUser, delayBeforeDisplay } = this.state;
 
@@ -242,7 +250,7 @@ renderResult = () => {
         if (userWon) {
             return (
                 <div className={styles['result']}>
-                    <p>You win!</p>
+                    <p>You won!</p>
                     <p>Do you want to play again?</p>
                     <p>Choose your symbol:</p>
                     <div className={styles['play-again']}>
@@ -254,7 +262,7 @@ renderResult = () => {
         } else if (winner !== null) {
             return (
                 <div className={styles['result']}>
-                    <p>You lose!</p>
+                    <p>You lost!</p>
                     <p>Do you want to play again?</p>
                     <p>Choose your symbol:</p>
                     <div className={styles['play-again']}>
