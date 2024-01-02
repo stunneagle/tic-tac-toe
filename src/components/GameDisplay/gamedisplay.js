@@ -339,8 +339,8 @@ getBestMove = (currentBoard, currentPlayer) => {
 
 renderResult = () => {
     const { winner, lastMoveByUser, delayBeforeDisplay,  } = this.state;
-    let computerWins = (this.state.computerWin)/2;
-    let userWins = (this.state.userWin)/2;
+    let computerWins = (this.state.computerWin);
+    let userWins = (this.state.userWin);
 
     if (winner !== null || this.state.board.every((cell) => cell !== EMPTY)) {
         const userWon = (winner === 'X' && lastMoveByUser) || (winner === 'O' && lastMoveByUser);
