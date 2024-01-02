@@ -254,9 +254,9 @@ getBestMove = (currentBoard, currentPlayer) => {
     if (
         currentBoard[5] ===myOpponent
         &&currentBoard[6] === myOpponent 
-        &&currentBoard[7] === EMPTY
+        &&currentBoard[0] === EMPTY
         ){
-        return 7;
+        return 0;
     }
     if (
         currentBoard[2] ===myOpponent
